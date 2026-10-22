@@ -1,11 +1,11 @@
-@import url('https://fonts.googleapis.com/css2?family=DM+Sans:wght@400;500;600;700&family=Playfair+Display:ital,wght@0,400;0,500;0,600;1,400;1,500&display=swap');
+@import url('https://fonts.googleapis.com/css2?family=Manrope:wght@400;500;600;700&family=Playfair+Display:ital,wght@0,400;0,500;0,600;1,400;1,500&display=swap');
 @import "tailwindcss";
 @import "tw-animate-css";
 
 @custom-variant dark (&:is(.dark *));
 
 :root {
-  font-family: 'DM Sans', sans-serif;
+  font-family: 'Manrope', sans-serif;
   color: #392624;
   background: #f8f4ee;
   font-synthesis: none;
@@ -224,4 +224,39 @@ button { color: inherit; }
   .footer { width: calc(100% - 38px); min-height: 100px; }
   .brand--footer { min-width: 0; }
   .footer__credit { max-width: 122px; font-size: 8px; line-height: 1.6; text-align: right; }
+}
+
+/* Midnight florals: keep the ripple visible while lifting every line of type. */
+:root {
+  color-scheme: dark;
+  color: #f8f5fb;
+  background: #0b0910;
+  --ink: #f8f5fb;
+  --rose: #ffd0e4;
+  --rose-dark: #e9a3c5;
+  --paper: #0d0b12;
+  --soft-paper: #15121b;
+  --petal: #efbfd7;
+  --sage: #bdc8b3;
+  --line: rgba(248, 239, 250, .2);
+}
+
+body { background: var(--paper); color: var(--ink); }
+::selection { color: #120d14; background: #f7bad8; }
+.intro-strip { background: rgba(12, 10, 16, .88); }
+.notes-section { background: rgba(12, 10, 16, .88); }
+.letter-section { background: rgba(18, 9, 17, .94); }
+.letter-card { border-color: rgba(255,255,255,.16); background: #151019; box-shadow: 0 25px 90px rgba(0,0,0,.48); }
+.note-card--open { background: rgba(255,255,255,.045); }
+.garden-shell :not(svg):not(path) { color: var(--ink); text-shadow: 0 0 11px rgba(255,255,255,.12); }
+.garden-shell :is(.hero h1 em, .section-heading h2 em, .notes-section h2 em, .intro-strip p em, .letter-card__verse em) {
+  color: var(--rose);
+  text-shadow: 0 0 24px rgba(255,188,217,.3);
+}
+.garden-shell :is(.hero h1, .section-heading h2, .notes-section h2, .letter-card h2) {
+  text-shadow: 0 0 26px rgba(255,255,255,.22);
+}
+
+@media (max-width: 650px) {
+  .ripple-backdrop { opacity: .16; }
 }

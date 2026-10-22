@@ -12,7 +12,7 @@
 
 .ripple-distortion--fallback {
   background-image:
-    linear-gradient(rgba(248, 244, 238, 0.5), rgba(248, 244, 238, 0.5)),
+    linear-gradient(rgba(10, 8, 14, 0.48), rgba(10, 8, 14, 0.48)),
     url("/images/rose-garden.jpg");
   background-position: center;
   background-size: cover;
