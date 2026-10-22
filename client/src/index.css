@@ -126,15 +126,25 @@ button { color: inherit; }
 .personal-letters__grid { display: grid; grid-template-columns: repeat(3, minmax(0, 1fr)); gap: 17px; max-width: 1120px; margin: auto; }
 .personal-letter { position: relative; display: flex; min-height: 265px; flex-direction: column; align-items: flex-start; padding: 25px 24px 22px; overflow: hidden; border: 1px solid rgba(244,190,219,.22); background: linear-gradient(145deg, rgba(37,23,38,.86), rgba(15,12,20,.86)); box-shadow: 0 15px 55px rgba(0,0,0,.22); transition: transform .35s ease, border-color .35s ease, box-shadow .35s ease; backdrop-filter: blur(10px); }
 .personal-letter:hover, .personal-letter--open { transform: translateY(-5px); border-color: rgba(255,195,225,.62); box-shadow: 0 18px 58px rgba(177,83,135,.17), 0 0 24px rgba(255,195,225,.08); }
+.personal-letter--open { animation: letter-flare .9s ease-out both; }
 .personal-letter__label { color: rgba(250,218,235,.7); font-size: 8px; letter-spacing: .17em; text-transform: uppercase; }
 .personal-letter__ornament { align-self: center; margin: 22px 0 8px; color: #ffc5e1; font-size: 19px; text-shadow: 0 0 18px rgba(255,172,218,.7); transition: transform .5s ease; }
 .personal-letter--open .personal-letter__ornament { transform: rotate(45deg) scale(1.2); }
+.personal-letter__burst { position: absolute; top: 31px; right: 35px; z-index: 2; width: 1px; height: 1px; color: #ffd5e9; pointer-events: none; }
+.personal-letter__burst i { position: absolute; display: block; opacity: 0; font-size: 18px; font-style: normal; filter: drop-shadow(0 0 9px rgba(255,171,218,.9)); }
+.personal-letter--open .personal-letter__burst i { animation: letter-petal-burst .78s cubic-bezier(.18,.72,.3,1) both; }
+.personal-letter--open .personal-letter__burst i:nth-child(2) { animation-delay: .05s; }
+.personal-letter--open .personal-letter__burst i:nth-child(3) { animation-delay: .1s; }
+.personal-letter__burst i:nth-child(2) { color: #fff; font-size: 14px; }
+.personal-letter__burst i:nth-child(3) { color: #ff9cc9; }
 .personal-letter h3 { align-self: center; margin: 0 0 13px; font-family: 'Cormorant Garamond', serif; font-size: 26px; font-weight: 500; line-height: 1.15; text-align: center; }
 .personal-letter__reveal { display: grid; width: 100%; grid-template-rows: 0fr; opacity: 0; transition: grid-template-rows .38s ease, opacity .3s ease; }
 .personal-letter--open .personal-letter__reveal { grid-template-rows: 1fr; opacity: 1; }
 .personal-letter__reveal p { overflow: hidden; margin: 0; color: rgba(248,245,251,.83); font-family: 'Cormorant Garamond', serif; font-size: 17px; line-height: 1.55; }
 .personal-letter__toggle { display: inline-flex; align-items: center; justify-content: center; gap: 8px; min-height: 37px; margin: auto auto 0; padding: 9px 13px 0; border: 0; background: transparent; color: #ffc7df; font-size: 9px; letter-spacing: .1em; text-transform: uppercase; cursor: pointer; transition: color .2s ease, text-shadow .2s ease; }
 .personal-letter__toggle:hover { color: #fff; text-shadow: 0 0 15px rgba(255,191,222,.85); }
+.personal-letter__toggle:active { transform: scale(.94); }
+.personal-letter__toggle:focus-visible { outline: 2px solid #ffd0e6; outline-offset: 4px; }
 
 .letter-section { position: relative; display: grid; place-items: center; min-height: 760px; padding: 94px 24px; overflow: hidden; background: rgba(125,69,72,.97); }
 .letter-section__backdrop { position: absolute; inset: 0; background: radial-gradient(ellipse at 50% 60%, rgba(229,191,178,.2), transparent 46%), radial-gradient(ellipse at 10% 15%, rgba(239,208,188,.14), transparent 25%), radial-gradient(ellipse at 92% 82%, rgba(49,29,34,.23), transparent 30%); }
@@ -168,6 +178,11 @@ button { color: inherit; }
 
 @keyframes photo-arrive { from { transform: scale(1.06); opacity: .72; } to { transform: scale(1); opacity: 1; } }
 @keyframes note-in { from { transform: translateY(7px); opacity: 0; } to { transform: translateY(0); opacity: 1; } }
+@keyframes letter-flare { 0% { box-shadow: 0 15px 55px rgba(0,0,0,.22); } 32% { box-shadow: 0 0 0 5px rgba(255,192,222,.14), 0 0 42px rgba(255,154,207,.34); } 100% { box-shadow: 0 18px 58px rgba(177,83,135,.17), 0 0 24px rgba(255,195,225,.08); } }
+@keyframes letter-petal-burst { 0% { opacity: 0; transform: translate(0,0) scale(.3) rotate(-22deg); } 20% { opacity: 1; } 100% { opacity: 0; transform: translate(var(--petal-x, 0), var(--petal-y, -30px)) scale(1.35) rotate(26deg); } }
+.personal-letter__burst i:nth-child(1) { --petal-x: 8px; --petal-y: -32px; }
+.personal-letter__burst i:nth-child(2) { --petal-x: -25px; --petal-y: -18px; }
+.personal-letter__burst i:nth-child(3) { --petal-x: 27px; --petal-y: -15px; }
 @media (prefers-reduced-motion: reduce) {
   *, *::before, *::after { scroll-behavior: auto !important; animation-duration: .01ms !important; animation-iteration-count: 1 !important; transition-duration: .01ms !important; }
 }

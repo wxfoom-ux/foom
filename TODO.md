@@ -12,4 +12,7 @@
 - [x] **Professional luminous typography:** Use Inter for the interface and Cormorant Garamond for editorial headings and love notes, with bright white lettering and a soft glow.
 - [x] **Personal love-message section:** Add a new section of personal love messages addressed to Abeer, with additional interactive effects.
 - [x] **Preview review:** Preview the updated website and confirm the flower effects and luminous black floral background, including the new message section.
+- [x] **More personal messages and click blooms:** Add more personal love messages addressed to Abeer, and add extra visual flower effects when a message is clicked.
+- [x] **Detailed preview:** Preview the updated website and show detailed views of the floral effects and luminous black background.
+- [ ] **Public launch:** Publish the website online and provide its working public direct link.
 - [ ] **GitHub and delivery:** Connect the managed site to the user-authorized GitHub repository, save a checkpoint, and verify the resulting project state.

@@ -23,6 +23,9 @@ const personalMessages = [
   { label: "A note for a quiet moment", title: "The little things I notice", text: "Dear Abeer, I notice how your kindness finds its way into the smallest moments. You make people feel seen, and you make ordinary days feel gentler just by being in them. I hope you know how rare and lovely that is." },
   { label: "For an ordinary day", title: "You make the everyday glow", text: "Dear Abeer, if I could give you one thing, it would be the chance to see yourself the way I do: warm, thoughtful, and quietly radiant. Even a simple day feels like something worth remembering when it has a little piece of you in it." },
   { label: "Kept close, always", title: "A promise in every petal", text: "Dear Abeer, wherever life takes us, I hope you never doubt this: your laughter is one of my favorite sounds, your happiness matters deeply to me, and I am endlessly glad that you are exactly who you are." },
+  { label: "A place in my thoughts", title: "You feel a little like home", text: "Dear Abeer, home is supposed to be a place, but sometimes it is a laugh, a familiar kindness, or the feeling that everything can slow down for a minute. Somehow, you have become all of those things to me." },
+  { label: "For the days that run long", title: "Your light stays with me", text: "Dear Abeer, even after a long day, remembering your smile makes the world feel softer around the edges. I hope today sends a little of that warmth back to you, because you give so much of it to everyone around you." },
+  { label: "No occasion needed", title: "Just because it is you", text: "Dear Abeer, this note has no grand reason. I simply wanted you to know that you matter to me, that I am grateful for every little moment we share, and that being yourself is already more than enough." },
 ];
 
 export default function Home() {
@@ -170,6 +173,7 @@ export default function Home() {
               <article className={`personal-letter ${isOpen ? "personal-letter--open" : ""}`} key={message.title}>
                 <span className="personal-letter__label">{message.label}</span>
                 <span className="personal-letter__ornament" aria-hidden="true">✳</span>
+                <span className="personal-letter__burst" aria-hidden="true"><i>✿</i><i>✧</i><i>❀</i></span>
                 <h3>{message.title}</h3>
                 <div className="personal-letter__reveal" aria-hidden={!isOpen}>
                   <p>{message.text}</p>
