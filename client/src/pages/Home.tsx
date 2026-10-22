@@ -1,6 +1,7 @@
 import { useState } from "react";
 import { ArrowDown, ArrowUpRight, Flower2, Heart, Sparkles } from "lucide-react";
 import InfiniteSpiral from "@/components/InfiniteSpiral";
+import RippleDistortion from "@/components/RippleDistortion";
 
 const flowers = [
   { src: "/images/rose-garden.jpg", alt: "A rose arch glowing in a garden at golden hour", title: "The place you bloom", note: "Some places feel like a deep breath. You feel like that to me — the quiet kind of magic that makes everything softer." },
@@ -34,6 +35,24 @@ export default function Home() {
 
   return (
     <main className="garden-shell">
+      <div className="ripple-backdrop" aria-hidden="true">
+        <RippleDistortion
+          src="/images/rose-garden.jpg"
+          brushSize={130}
+          strength={0.035}
+          swirl={0.75}
+          rings={3}
+          spread={3}
+          fade={2.8}
+          tint="#a85058"
+          tintAmount={0.16}
+          grayscale
+          highlightColor="#f4d9cb"
+          quality="low"
+          trigger="hover"
+          className="ripple-backdrop__surface"
+        />
+      </div>
       <header className="topbar">
         <a className="brand" href="#home" aria-label="Bloom for Abeer home">
           <span className="brand__seal"><Flower2 size={19} strokeWidth={1.5} /></span>

@@ -4,14 +4,16 @@ A small, romantic English-language flower garden created for Abeer. Its editoria
 
 ## The experience
 
+- A fixed, subtle floral backdrop uses the supplied `RippleDistortion` WebGL effect: pointer movement sends out soft water-like ripples over a locally stored flower image.
+- The floral backdrop respects `prefers-reduced-motion` and falls back to a still image where WebGL is unavailable.
 - The flower gallery borrows the supplied InfiniteSpiral interaction: its cards drift in a looping floral helix, pause on hover, respond to pointer/touch drag, and can be stepped through with accessible previous/next controls.
 - Selecting a flower changes the accompanying love note. Three additional notes expand in place, and the closing letter is dedicated to Abeer.
-- Motion respects `prefers-reduced-motion`; layouts adapt from desktop to mobile. The share control copies the garden's current URL.
+- Layouts adapt from desktop to mobile. The share control copies the garden's current URL.
 - Floral photographs are sourced from [Unsplash](https://unsplash.com/) and [Pexels](https://www.pexels.com/).
 
 ## Development
 
-This site uses the project's React/Vite starter and is served as a static frontend; it does not require a database or application server.
+This site uses the project's React/Vite starter and is served as a static frontend; it does not require a database or application server. OGL powers the WebGL displacement effect.
 
 ```sh
 pnpm dev:static

@@ -1,0 +1,25 @@
+.ripple-distortion {
+  position: relative;
+  width: 100%;
+  height: 100%;
+  overflow: hidden;
+  background-color: #ead7d0;
+}
+
+.ripple-distortion canvas {
+  transition: opacity 220ms ease;
+}
+
+.ripple-distortion--fallback {
+  background-image:
+    linear-gradient(rgba(248, 244, 238, 0.5), rgba(248, 244, 238, 0.5)),
+    url("/images/rose-garden.jpg");
+  background-position: center;
+  background-size: cover;
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .ripple-distortion canvas {
+    transition: none;
+  }
+}
