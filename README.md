@@ -1,14 +1,22 @@
-# Bloom for Abeer
+# Petal & Promise — For Abeer
 
-React / Express / tRPC / Drizzle starter, adapted from the Sandbox web-db-user template.
+A small, romantic English-language flower garden created for Abeer. Its editorial, paper-and-rose palette frames a gentle opening note, an interactive infinite spiral of blooms, expandable love notes, and a final dedication.
 
-- `pnpm dev`: development server; honors `PORT` (default 3000).
-- `pnpm build` / `pnpm start`: build and serve `dist/index.js` and `dist/public/`.
-- `pnpm db:migrate`: apply checked-in migrations. `pnpm db:push`: generate and apply new schema changes.
-- `pnpm check` / `pnpm test`: types and application tests.
+## The experience
 
-Start with the Webdev skill's default-template guide. Platform login, storage, payments and service contracts live in its shared references; read the relevant capability before extending its helper.
+- The flower gallery borrows the supplied InfiniteSpiral interaction: its cards drift in a looping floral helix, pause on hover, respond to pointer/touch drag, and can be stepped through with accessible previous/next controls.
+- Selecting a flower changes the accompanying love note. Three additional notes expand in place, and the closing letter is dedicated to Abeer.
+- Motion respects `prefers-reduced-motion`; layouts adapt from desktop to mobile. The share control copies the garden's current URL.
+- Floral photographs are sourced from [Unsplash](https://unsplash.com/) and [Pexels](https://www.pexels.com/).
 
-`server/_core/publicConfig.ts` exposes only named public runtime values. Private keys stay server-side. The platform serves managed `/manus-storage/` assets; the application does not register a second proxy.
+## Development
 
-Platform configuration is readable and editable through `webdev.config`. Default settings are initial values, not enforced constraints. The agent may modify the files, commands and configuration or follow the flexible guide for another stack.
+This site uses the project's React/Vite starter and is served as a static frontend; it does not require a database or application server.
+
+```sh
+pnpm dev:static
+pnpm check
+pnpm build:static
+```
+
+Vite serves the application from `client/`, and static assets live in `client/public/`. The source route manifest is `client/public/manus-routes.json`.
