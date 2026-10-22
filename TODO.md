@@ -7,4 +7,4 @@
 - [x] **Polished motion and accessibility:** Include refined hover, reveal, and transition effects while respecting the visitor’s reduced-motion preference.
 - [x] **Responsive experience:** Optimize the layout for phones, tablets, and desktop while keeping text legible and the gallery smooth.
 - [x] **Memorable closing dedication:** Finish with a prominent emotional dedication to Abeer that gives the experience a distinctive ending.
-- [ ] **GitHub and delivery:** Connect the managed site to the user-authorized GitHub repository after its confirmation flow; save a checkpoint and verify the resulting project state.
+- [x] **GitHub and delivery:** Connect the managed site to the user-authorized GitHub repository after its confirmation flow; save a checkpoint and verify the resulting project state.
