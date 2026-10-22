@@ -1,20 +1,18 @@
 # Petal & Promise — For Abeer
 
-A romantic English-language flower garden created for Abeer. Its midnight-and-rose palette pairs luminous white typography with a restrained pink glow, an interactive infinite spiral of blooms, expandable love notes, and a final dedication.
+A romantic English-language experience for Abeer, now illustrated with moonlit oceans, mountain skies, desert horizons, and city lights instead of flower photography. A midnight-purple RippleDistortion backdrop sits behind luminous white typography, with love notes and an interactive spiral of scenes.
 
 ## The experience
 
-- A fixed floral backdrop uses the supplied `RippleDistortion` WebGL effect: pointer movement sends soft water-like ripples over a locally stored flower image.
-- Every click on the page releases a small, glowing ring of flowers at the pointer; keyboard-triggered clicks bloom beside the activated control. Reduced-motion preferences keep the flourish still and brief.
-- The floral backdrop respects `prefers-reduced-motion` and falls back to a still image where WebGL is unavailable.
-- The flower gallery borrows the supplied InfiniteSpiral interaction: its cards drift in a looping floral helix, pause on hover, respond to pointer/touch drag, and can be stepped through with accessible previous/next controls.
-- Selecting a flower changes the accompanying love note. Three additional notes expand in place, and the closing letter is dedicated to Abeer.
-- Inter provides crisp interface typography; Cormorant Garamond adds refined editorial character to headings and love notes. White lettering carries a soft luminous glow. Layouts adapt from desktop to mobile.
-- Floral photographs are sourced from [Unsplash](https://unsplash.com/) and [Pexels](https://www.pexels.com/).
+- `RippleDistortion` uses the local `/hero.jpg` backdrop with the requested brush size, strength, swirl, rings, spread, fade, spacing, dispersion, glint, tint, highlight, hover trigger, click strength, and low-quality settings.
+- Every click in the garden releases a glowing six-flower flourish at the pointer; keyboard-activated clicks bloom beside their control. Reduced-motion preferences keep the flourish still and brief.
+- The photo spiral includes starry landscapes, misty mountains, sunset dunes, a rain-lit city, a mountain road, and warm city lights. Selecting an image changes its accompanying love note.
+- Inter provides crisp interface typography, while Cormorant Garamond gives the headings and notes an editorial feel. Layouts adapt from desktop to mobile.
+- Landscape and city photographs are sourced from [Unsplash](https://unsplash.com/) and [Pexels](https://www.pexels.com/).
 
 ## Development
 
-This site uses the project's React/Vite starter and is served as a static frontend; it does not require a database or application server. OGL powers the WebGL displacement effect.
+This React/Vite site is served as a static frontend and does not require a database or application server. OGL powers the WebGL displacement effect.
 
 ```sh
 pnpm dev:static

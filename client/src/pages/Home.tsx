@@ -4,13 +4,13 @@ import InfiniteSpiral from "@/components/InfiniteSpiral";
 import RippleDistortion from "@/components/RippleDistortion";
 import ClickFlowerEffect from "@/components/ClickFlowerEffect";
 
-const flowers = [
-  { src: "/images/rose-garden.jpg", alt: "A rose arch glowing in a garden at golden hour", title: "The place you bloom", note: "Some places feel like a deep breath. You feel like that to me — the quiet kind of magic that makes everything softer." },
-  { src: "/images/peonies-sunset.jpg", alt: "Blush peonies catching the last light of the day", title: "A softer kind of light", note: "You have this way of making an ordinary day look like it was painted just for us. I hope you know how rare that is." },
-  { src: "/images/ranunculus.jpg", alt: "Pale pink ranunculus gathered into a delicate bouquet", title: "A hundred little things", note: "It is never only one thing. It is your laugh, your heart, your little details — all the reasons I keep choosing you." },
-  { src: "/images/soft-blooms.jpg", alt: "A cloud of softly colored garden blooms", title: "Gentle, always", note: "Even the loudest days feel quieter when I think of you. You are my favorite kind of peace." },
-  { src: "/images/pastel-bouquet.jpg", alt: "A tender bouquet of pastel flowers", title: "A note between petals", note: "If I could tuck a little reminder into every flower, it would say: you are loved more than words know how to hold." },
-  { src: "/images/deep-rose.jpg", alt: "Deep red roses arranged in a romantic bouquet", title: "My favorite forever", note: "No grand occasion needed. Today, and all the quiet tomorrows after it, I am simply grateful that you are you." },
+const moments = [
+  { src: "/images/starlit-landscape.jpg", alt: "A mountain landscape beneath a sky full of stars", title: "A little quiet under the stars", note: "When the day grows loud, thinking of you feels like finding a quiet patch of sky to rest in." },
+  { src: "/images/misty-mountains.jpg", alt: "Layers of misty mountains catching the first light", title: "A softer kind of light", note: "You bring the kind of calm that makes the whole world feel a little more gentle." },
+  { src: "/images/desert-sunset.jpg", alt: "Golden desert dunes stretching toward a distant sunset", title: "Somewhere new, together", note: "I would choose your company on any road, in any place, over every perfect view." },
+  { src: "/images/city-after-rain.jpg", alt: "Warm lights reflected in a quiet city street after rain", title: "The bright side of ordinary", note: "Even an ordinary evening feels special when I get to share the thought of you." },
+  { src: "/images/mountain-road.jpg", alt: "A winding road leading toward a mountain valley at dusk", title: "Every road feels closer", note: "No matter how far the day carries us, you remain the place my heart looks for." },
+  { src: "/images/warm-city-lights.jpg", alt: "Golden windows glowing along a city street at night", title: "Little lights, always", note: "I hope you remember that even on the darkest nights, the world still finds ways to shine — like you." },
 ];
 
 const notes = [
@@ -39,19 +39,24 @@ export default function Home() {
       <ClickFlowerEffect />
       <div className="ripple-backdrop" aria-hidden="true">
         <RippleDistortion
-          src="/images/rose-garden.jpg"
-          brushSize={130}
-          strength={0.035}
-          swirl={0.75}
-          rings={3}
-          spread={3}
-          fade={2.8}
-          tint="#a85058"
-          tintAmount={0.16}
+          src="/hero.jpg"
+          brushSize={150}
+          strength={0.2}
+          swirl={1}
+          rings={4}
           grayscale
-          highlightColor="#f4d9cb"
-          quality="low"
+          spread={5}
+          fade={3}
+          spacing={15}
+          dispersion={0}
+          glint={0}
+          tint="#a855f7"
+          tintAmount={0.1}
+          highlightColor="#ffffff"
           trigger="hover"
+          clickStrength={2}
+          quality="low"
+          enabled
           className="ripple-backdrop__surface"
         />
       </div>
@@ -74,13 +79,13 @@ export default function Home() {
         <div className="hero__copy">
           <div className="eyebrow"><span className="eyebrow__line" />A GARDEN MADE OF WORDS <span className="eyebrow__sparkle">✳</span></div>
           <h1 id="hero-title">For you,<br /><em>Abeer.</em></h1>
-          <p className="hero__lead">A thousand flowers could never say it quite like this — but let them try.</p>
+          <p className="hero__lead">A thousand beautiful things could never say it quite like this — but let me try.</p>
           <a className="round-cta" href="#garden"><span>Wander through<br />your garden</span><i><ArrowDown size={18} /></i></a>
           <span className="hero__scribble" aria-hidden="true">with all my heart</span>
         </div>
         <div className="hero__art">
           <div className="hero__photo-wrap">
-            <img src="/images/rose-garden.jpg" alt="An arch of roses in a sunlit garden" fetchPriority="high" />
+            <img src="/manus-storage/async-images/oOL5RZShzgHmEBF6ORkjbv/image-1.webp" alt="A moonlit ocean beneath an atmospheric violet sky" fetchPriority="high" />
             <div className="hero__photo-glaze" />
             <div className="hero__caption"><span>01 / A PLACE TO BEGIN</span><span>Made for your kind of lovely</span></div>
           </div>
@@ -99,16 +104,16 @@ export default function Home() {
       <section className="garden-section" id="garden" aria-labelledby="garden-title">
         <div className="section-heading">
           <div className="eyebrow"><span className="eyebrow__line" />TAKE YOUR TIME</div>
-          <h2 id="garden-title">A few things<br /><em>that bloom</em> when<br />I think of you.</h2>
-          <p>Every flower holds a small thought.<br />Choose one, and let it tell you.</p>
+          <h2 id="garden-title">A few moments<br /><em>I keep close</em> when<br />I think of you.</h2>
+          <p>Every image holds a small thought.<br />Choose one, and let it tell you.</p>
           <span className="section-heading__flower" aria-hidden="true">✿</span>
         </div>
         <div className="garden-gallery">
-          <InfiniteSpiral flowers={flowers} onSelect={setActiveBloom} />
+          <InfiniteSpiral flowers={moments} onSelect={setActiveBloom} />
           <div className="bloom-note" aria-live="polite" key={activeBloom}>
             <span className="bloom-note__index">A SMALL THOUGHT · {String(activeBloom + 1).padStart(2, "0")}</span>
-            <h3>{flowers[activeBloom].title}</h3>
-            <p>{flowers[activeBloom].note}</p>
+            <h3>{moments[activeBloom].title}</h3>
+            <p>{moments[activeBloom].note}</p>
             <span className="bloom-note__rule" />
           </div>
           <div className="gallery-side-note" aria-hidden="true"><span>ROTATE GENTLY</span><span>♡</span></div>
@@ -164,7 +169,7 @@ export default function Home() {
           <span className="brand__words"><strong>petal &amp; promise</strong><small>For Abeer, always.</small></span>
         </a>
         <span className="footer__note">A small corner of the world, made a little softer for you.</span>
-        <span className="footer__credit">Flower photography from <a href="https://www.pexels.com/" target="_blank" rel="noreferrer">Pexels</a> &amp; <a href="https://unsplash.com/" target="_blank" rel="noreferrer">Unsplash</a>.</span>
+        <span className="footer__credit">Landscape and city photography from <a href="https://www.pexels.com/" target="_blank" rel="noreferrer">Pexels</a> &amp; <a href="https://unsplash.com/" target="_blank" rel="noreferrer">Unsplash</a>.</span>
       </footer>
     </main>
   );

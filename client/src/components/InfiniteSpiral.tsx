@@ -141,7 +141,7 @@ export default function InfiniteSpiral({ flowers, onSelect }: InfiniteSpiralProp
         movedRef.current = false;
       }}
       role="group"
-      aria-label="A moving spiral of flowers for Abeer"
+      aria-label="A moving spiral of photographs for Abeer"
     >
       <div className="spiral__glow" aria-hidden="true" />
       <div className="spiral__stage" role="list">
@@ -163,10 +163,10 @@ export default function InfiniteSpiral({ flowers, onSelect }: InfiniteSpiralProp
           </button>
         ))}
       </div>
-      <div className="spiral__controls" aria-label="Choose a flower">
-        <button type="button" onClick={() => moveBy(-1)} aria-label="Previous flower">←</button>
+      <div className="spiral__controls" aria-label="Choose a photograph">
+        <button type="button" onClick={() => moveBy(-1)} aria-label="Previous photograph">←</button>
         <span>DRAG TO WANDER</span>
-        <button type="button" onClick={() => moveBy(1)} aria-label="Next flower">→</button>
+        <button type="button" onClick={() => moveBy(1)} aria-label="Next photograph">→</button>
       </div>
     </div>
   );

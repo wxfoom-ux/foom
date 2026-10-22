@@ -148,7 +148,7 @@ const hexToRGB = hex => {
 };
 
 const RippleDistortion = ({
-  src = '/images/rose-garden.jpg',
+  src = '/hero.jpg',
   brushSize = 130,
   strength = 0.035,
   swirl = 0.75,
