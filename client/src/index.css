@@ -1,11 +1,11 @@
-@import url('https://fonts.googleapis.com/css2?family=Manrope:wght@400;500;600;700&family=Playfair+Display:ital,wght@0,400;0,500;0,600;1,400;1,500&display=swap');
+@import url('https://fonts.googleapis.com/css2?family=Cormorant+Garamond:ital,wght@0,400;0,500;0,600;1,400;1,500&family=Inter:wght@400;500;600;700;800&display=swap');
 @import "tailwindcss";
 @import "tw-animate-css";
 
 @custom-variant dark (&:is(.dark *));
 
 :root {
-  font-family: 'Manrope', sans-serif;
+  font-family: 'Inter', sans-serif;
   color: #392624;
   background: #f8f4ee;
   font-synthesis: none;
@@ -248,7 +248,7 @@ body { background: var(--paper); color: var(--ink); }
 .letter-section { background: rgba(18, 9, 17, .94); }
 .letter-card { border-color: rgba(255,255,255,.16); background: #151019; box-shadow: 0 25px 90px rgba(0,0,0,.48); }
 .note-card--open { background: rgba(255,255,255,.045); }
-.garden-shell :not(svg):not(path) { color: var(--ink); text-shadow: 0 0 11px rgba(255,255,255,.12); }
+.garden-shell :not(svg):not(path) { color: var(--ink); font-family: 'Inter', sans-serif; text-shadow: 0 0 11px rgba(255,255,255,.12); }
 .garden-shell :is(.hero h1 em, .section-heading h2 em, .notes-section h2 em, .intro-strip p em, .letter-card__verse em) {
   color: var(--rose);
   text-shadow: 0 0 24px rgba(255,188,217,.3);
@@ -256,7 +256,38 @@ body { background: var(--paper); color: var(--ink); }
 .garden-shell :is(.hero h1, .section-heading h2, .notes-section h2, .letter-card h2) {
   text-shadow: 0 0 26px rgba(255,255,255,.22);
 }
+.garden-shell :is(.brand__words strong, .hero h1, .hero__lead, .hero__scribble, .hero__caption span:last-child, .hero__stamp span, .intro-strip p, .intro-strip__signature, .section-heading h2, .section-heading > p, .section-heading__flower, .notes-section h2, .bloom-note h3, .bloom-note p, .note-card__number, .note-card__body h3, .note-card__reveal p, .notes-section__whisper, .letter-card__small-flower, .letter-card h2, .letter-card__verse, .letter-card__dedication, .letter-card__signoff, .footer__note) {
+  font-family: 'Cormorant Garamond', serif;
+}
 
 @media (max-width: 650px) {
   .ripple-backdrop { opacity: .16; }
+}
+
+.flower-pulse-layer { position: fixed; z-index: 1200; inset: 0; overflow: visible; pointer-events: none; }
+.flower-pulse { position: absolute; }
+.flower-pulse__bloom {
+  position: absolute;
+  top: 0;
+  left: 0;
+  translate: -50% -50%;
+  opacity: 0;
+  line-height: 1;
+  text-shadow: 0 0 9px rgba(255,245,251,.9), 0 0 24px rgba(242,158,204,.85);
+  animation: flower-bloom 920ms cubic-bezier(.2,.72,.18,1) var(--bloom-delay) both;
+  will-change: transform, opacity;
+}
+
+@keyframes flower-bloom {
+  0% { opacity: 0; transform: scale(.14) rotate(-32deg); }
+  16%, 68% { opacity: 1; }
+  100% { opacity: 0; transform: translate(var(--bloom-x), var(--bloom-y)) scale(1.12) rotate(var(--bloom-rotate)); }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .flower-pulse__bloom {
+    animation: none !important;
+    opacity: .95;
+    transform: translate(var(--bloom-x), var(--bloom-y)) scale(1.05);
+  }
 }

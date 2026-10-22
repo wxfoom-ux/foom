@@ -2,6 +2,7 @@ import { useState } from "react";
 import { ArrowDown, ArrowUpRight, Flower2, Heart, Sparkles } from "lucide-react";
 import InfiniteSpiral from "@/components/InfiniteSpiral";
 import RippleDistortion from "@/components/RippleDistortion";
+import ClickFlowerEffect from "@/components/ClickFlowerEffect";
 
 const flowers = [
   { src: "/images/rose-garden.jpg", alt: "A rose arch glowing in a garden at golden hour", title: "The place you bloom", note: "Some places feel like a deep breath. You feel like that to me — the quiet kind of magic that makes everything softer." },
@@ -35,6 +36,7 @@ export default function Home() {
 
   return (
     <main className="garden-shell">
+      <ClickFlowerEffect />
       <div className="ripple-backdrop" aria-hidden="true">
         <RippleDistortion
           src="/images/rose-garden.jpg"
