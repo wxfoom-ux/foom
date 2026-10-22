@@ -3,7 +3,7 @@
   width: 100%;
   height: 100%;
   overflow: hidden;
-  background-color: #ead7d0;
+  background-color: #1a1018;
 }
 
 .ripple-distortion canvas {
@@ -13,7 +13,7 @@
 .ripple-distortion--fallback {
   background-image:
     linear-gradient(rgba(10, 8, 14, 0.48), rgba(10, 8, 14, 0.48)),
-    url("/hero.jpg");
+    url("/manus-storage/async-images/9xDk7tyfhJwL0WijN0YGPr/image-1.webp");
   background-position: center;
   background-size: cover;
 }

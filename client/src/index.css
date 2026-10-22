@@ -30,7 +30,7 @@ button { color: inherit; }
 ::selection { color: #fff8f4; background: #a85058; }
 
 .garden-shell { position: relative; z-index: 1; overflow: hidden; }
-.ripple-backdrop { position: fixed; z-index: 0; inset: 0; overflow: hidden; opacity: .2; pointer-events: none; }
+.ripple-backdrop { position: fixed; z-index: 0; inset: 0; overflow: hidden; opacity: .43; pointer-events: none; }
 .ripple-backdrop__surface { position: absolute; inset: 0; }
 .topbar { position: relative; z-index: 5; display: flex; align-items: center; justify-content: space-between; width: min(1320px, calc(100% - 104px)); height: 94px; margin: auto; border-bottom: 1px solid var(--line); }
 .brand { display: inline-flex; align-items: center; gap: 12px; min-width: 230px; }
@@ -243,10 +243,10 @@ button { color: inherit; }
 
 body { background: var(--paper); color: var(--ink); }
 ::selection { color: #120d14; background: #f7bad8; }
-.intro-strip { background: rgba(12, 10, 16, .88); }
-.notes-section { background: rgba(12, 10, 16, .88); }
-.letter-section { background: rgba(18, 9, 17, .94); }
-.letter-card { border-color: rgba(255,255,255,.16); background: #151019; box-shadow: 0 25px 90px rgba(0,0,0,.48); }
+.intro-strip { background: rgba(12, 10, 16, .58); }
+.notes-section { background: rgba(12, 10, 16, .62); }
+.letter-section { background: rgba(18, 9, 17, .72); }
+.letter-card { border-color: rgba(255,255,255,.16); background: rgba(21, 16, 25, .76); box-shadow: 0 25px 90px rgba(0,0,0,.48); backdrop-filter: blur(8px); }
 .note-card--open { background: rgba(255,255,255,.045); }
 .garden-shell :not(svg):not(path) { color: var(--ink); font-family: 'Inter', sans-serif; text-shadow: 0 0 11px rgba(255,255,255,.12); }
 .garden-shell :is(.hero h1 em, .section-heading h2 em, .notes-section h2 em, .intro-strip p em, .letter-card__verse em) {
@@ -261,7 +261,7 @@ body { background: var(--paper); color: var(--ink); }
 }
 
 @media (max-width: 650px) {
-  .ripple-backdrop { opacity: .16; }
+  .ripple-backdrop { opacity: .34; }
 }
 
 .flower-pulse-layer { position: fixed; z-index: 1200; inset: 0; overflow: visible; pointer-events: none; }

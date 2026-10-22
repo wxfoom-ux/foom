@@ -1,14 +1,14 @@
 # Petal & Promise — For Abeer
 
-A romantic English-language experience for Abeer, now illustrated with moonlit oceans, mountain skies, desert horizons, and city lights instead of flower photography. A midnight-purple RippleDistortion backdrop sits behind luminous white typography, with love notes and an interactive spiral of scenes.
+A romantic English-language experience for Abeer, now filled throughout with original, high-end floral photography: a full-screen rose-and-peony RippleDistortion backdrop, a matching floral hero image, and six distinct flower portraits in the interactive spiral. Luminous white typography and personal love notes sit over the dramatic midnight garden.
 
 ## The experience
 
-- `RippleDistortion` uses the local `/hero.jpg` backdrop with the requested brush size, strength, swirl, rings, spread, fade, spacing, dispersion, glint, tint, highlight, hover trigger, click strength, and low-quality settings.
+- `RippleDistortion` uses the full-screen original rose-and-peony image from Managed Storage, with the requested brush size, strength, swirl, rings, spread, fade, spacing, dispersion, glint, tint, highlight, hover trigger, click strength, and low-quality settings.
 - Every click in the garden releases a glowing six-flower flourish at the pointer; keyboard-activated clicks bloom beside their control. Reduced-motion preferences keep the flourish still and brief.
-- The photo spiral includes starry landscapes, misty mountains, sunset dunes, a rain-lit city, a mountain road, and warm city lights. Selecting an image changes its accompanying love note.
+- The hero and all six spiral photographs show professional, original floral imagery: crimson roses, blush peonies, golden-hour tulips, ivory orchids, plum dahlias, and a romantic hand-tied bouquet. Selecting an image changes its accompanying love note.
 - Inter provides crisp interface typography, while Cormorant Garamond gives the headings and notes an editorial feel. Layouts adapt from desktop to mobile.
-- Landscape and city photographs are sourced from [Unsplash](https://unsplash.com/) and [Pexels](https://www.pexels.com/).
+- A translucent midnight treatment keeps the floral backdrop visibly present through the full page while protecting text legibility.
 
 ## Development
 

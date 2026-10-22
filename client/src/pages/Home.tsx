@@ -5,12 +5,12 @@ import RippleDistortion from "@/components/RippleDistortion";
 import ClickFlowerEffect from "@/components/ClickFlowerEffect";
 
 const moments = [
-  { src: "/images/starlit-landscape.jpg", alt: "A mountain landscape beneath a sky full of stars", title: "A little quiet under the stars", note: "When the day grows loud, thinking of you feels like finding a quiet patch of sky to rest in." },
-  { src: "/images/misty-mountains.jpg", alt: "Layers of misty mountains catching the first light", title: "A softer kind of light", note: "You bring the kind of calm that makes the whole world feel a little more gentle." },
-  { src: "/images/desert-sunset.jpg", alt: "Golden desert dunes stretching toward a distant sunset", title: "Somewhere new, together", note: "I would choose your company on any road, in any place, over every perfect view." },
-  { src: "/images/city-after-rain.jpg", alt: "Warm lights reflected in a quiet city street after rain", title: "The bright side of ordinary", note: "Even an ordinary evening feels special when I get to share the thought of you." },
-  { src: "/images/mountain-road.jpg", alt: "A winding road leading toward a mountain valley at dusk", title: "Every road feels closer", note: "No matter how far the day carries us, you remain the place my heart looks for." },
-  { src: "/images/warm-city-lights.jpg", alt: "Golden windows glowing along a city street at night", title: "Little lights, always", note: "I hope you remember that even on the darkest nights, the world still finds ways to shine — like you." },
+  { src: "/manus-storage/async-images/9xDk7tyfhJwL0WijN0YGPr/image-2.webp", alt: "A dew-kissed crimson rose in dramatic velvet shadows", title: "A rose worth the pause", note: "Like the loveliest rose, you make an ordinary moment feel worth keeping." },
+  { src: "/manus-storage/async-images/9xDk7tyfhJwL0WijN0YGPr/image-3.webp", alt: "A luxurious bouquet of blush peonies and ivory garden roses", title: "A softer kind of lovely", note: "There is a quiet grace in you that makes everything around you feel gentler." },
+  { src: "/manus-storage/async-images/9xDk7tyfhJwL0WijN0YGPr/image-4.webp", alt: "A romantic field of pink and crimson tulips at golden hour", title: "A field of little wonders", note: "If every tulip held one kind thought about you, this field would still fall short." },
+  { src: "/manus-storage/async-images/9xDk7tyfhJwL0WijN0YGPr/image-5.webp", alt: "Elegant white orchids and pale blush flowers in deep green foliage", title: "Elegance, without trying", note: "You have a way of making beauty feel effortless, simply by being yourself." },
+  { src: "/manus-storage/async-images/4ZY9jB9eqijrVy6oYo9B96/image-1.webp", alt: "An intricate dark plum dahlia in soft dramatic light", title: "Every petal, a promise", note: "A hundred petals, and still none could hold all the ways you make me smile." },
+  { src: "/manus-storage/async-images/4ZY9jB9eqijrVy6oYo9B96/image-2.webp", alt: "A hand-tied romantic bouquet of roses, ranunculus and seasonal blooms", title: "A bouquet, just for you", note: "All the color in this bouquet is only a small reflection of the warmth you bring." },
 ];
 
 const notes = [
@@ -39,7 +39,7 @@ export default function Home() {
       <ClickFlowerEffect />
       <div className="ripple-backdrop" aria-hidden="true">
         <RippleDistortion
-          src="/hero.jpg"
+          src="/manus-storage/async-images/9xDk7tyfhJwL0WijN0YGPr/image-1.webp"
           brushSize={150}
           strength={0.2}
           swirl={1}
@@ -85,7 +85,7 @@ export default function Home() {
         </div>
         <div className="hero__art">
           <div className="hero__photo-wrap">
-            <img src="/manus-storage/async-images/oOL5RZShzgHmEBF6ORkjbv/image-1.webp" alt="A moonlit ocean beneath an atmospheric violet sky" fetchPriority="high" />
+            <img src="/manus-storage/async-images/9xDk7tyfhJwL0WijN0YGPr/image-2.webp" alt="A dew-kissed crimson rose in dramatic velvet shadows" fetchPriority="high" />
             <div className="hero__photo-glaze" />
             <div className="hero__caption"><span>01 / A PLACE TO BEGIN</span><span>Made for your kind of lovely</span></div>
           </div>
@@ -169,7 +169,7 @@ export default function Home() {
           <span className="brand__words"><strong>petal &amp; promise</strong><small>For Abeer, always.</small></span>
         </a>
         <span className="footer__note">A small corner of the world, made a little softer for you.</span>
-        <span className="footer__credit">Landscape and city photography from <a href="https://www.pexels.com/" target="_blank" rel="noreferrer">Pexels</a> &amp; <a href="https://unsplash.com/" target="_blank" rel="noreferrer">Unsplash</a>.</span>
+        <span className="footer__credit">Original floral photography, made with love for Abeer.</span>
       </footer>
     </main>
   );
