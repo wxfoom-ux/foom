@@ -19,9 +19,16 @@ const notes = [
   { number: "03", title: "For the little things that are everything", text: "Your kindness, your spark, the way you notice what others miss — I collect these things quietly, like petals pressed into a favorite book." },
 ];
 
+const personalMessages = [
+  { label: "A note for a quiet moment", title: "The little things I notice", text: "Dear Abeer, I notice how your kindness finds its way into the smallest moments. You make people feel seen, and you make ordinary days feel gentler just by being in them. I hope you know how rare and lovely that is." },
+  { label: "For an ordinary day", title: "You make the everyday glow", text: "Dear Abeer, if I could give you one thing, it would be the chance to see yourself the way I do: warm, thoughtful, and quietly radiant. Even a simple day feels like something worth remembering when it has a little piece of you in it." },
+  { label: "Kept close, always", title: "A promise in every petal", text: "Dear Abeer, wherever life takes us, I hope you never doubt this: your laughter is one of my favorite sounds, your happiness matters deeply to me, and I am endlessly glad that you are exactly who you are." },
+];
+
 export default function Home() {
   const [activeBloom, setActiveBloom] = useState(0);
   const [openNote, setOpenNote] = useState<number | null>(null);
+  const [openPersonalMessage, setOpenPersonalMessage] = useState<number | null>(null);
   const [copied, setCopied] = useState(false);
 
   const shareGarden = async () => {
@@ -68,6 +75,7 @@ export default function Home() {
         <nav className="main-nav" aria-label="Main navigation">
           <a href="#garden">The garden</a>
           <a href="#little-things">Little things</a>
+          <a href="#love-letters">Love letters</a>
           <a href="#letter">The letter</a>
         </nav>
         <button className="share-button" type="button" onClick={shareGarden}>
@@ -147,6 +155,33 @@ export default function Home() {
           ))}
         </div>
         <div className="notes-section__whisper"><Sparkles size={14} /> The best things never need a special occasion.</div>
+      </section>
+
+      <section className="personal-letters" id="love-letters" aria-labelledby="personal-letters-title">
+        <div className="personal-letters__heading">
+          <div className="eyebrow"><span className="eyebrow__line" />JUST BETWEEN US</div>
+          <h2 id="personal-letters-title">Little letters,<br /><em>meant for Abeer.</em></h2>
+          <p>Choose a seal, open a note, and keep the words that feel like yours.</p>
+        </div>
+        <div className="personal-letters__grid">
+          {personalMessages.map((message, index) => {
+            const isOpen = openPersonalMessage === index;
+            return (
+              <article className={`personal-letter ${isOpen ? "personal-letter--open" : ""}`} key={message.title}>
+                <span className="personal-letter__label">{message.label}</span>
+                <span className="personal-letter__ornament" aria-hidden="true">✳</span>
+                <h3>{message.title}</h3>
+                <div className="personal-letter__reveal" aria-hidden={!isOpen}>
+                  <p>{message.text}</p>
+                </div>
+                <button className="personal-letter__toggle" type="button" aria-expanded={isOpen} onClick={() => setOpenPersonalMessage(isOpen ? null : index)}>
+                  <Heart size={15} fill={isOpen ? "currentColor" : "none"} />
+                  {isOpen ? "Fold this letter" : "Open your letter"}
+                </button>
+              </article>
+            );
+          })}
+        </div>
       </section>
 
       <section className="letter-section" id="letter" aria-labelledby="letter-title">
