@@ -17,12 +17,13 @@ const constellationNotes = [
 ];
 
 export default function Home() {
-  const [language, setLanguage] = useState<Language>(() => typeof window !== "undefined" && localStorage.getItem("ghalia-language") === "en" ? "en" : "ar");
+  const language = "en" as Language;
   const [menuOpen, setMenuOpen] = useState(false);
   const [activeChapter, setActiveChapter] = useState(0);
   const [activeNote, setActiveNote] = useState(0);
   const [progress, setProgress] = useState(0);
-  const isArabic = language === "ar";
+  const [clickBursts, setClickBursts] = useState<{ id: number; x: number; y: number }[]>([]);
+  const isArabic = false;
   const t = useMemo(() => language === "ar" ? {
     nav: ["البداية", "الرسالة", "الفصول", "الكوكبة"],
     eyebrow: "تجربة شخصية، مكتوبة في ضوء النجوم",
@@ -80,8 +81,18 @@ export default function Home() {
     document.documentElement.dir = isArabic ? "rtl" : "ltr";
     document.title = isArabic ? "غالية — كونٌ صغير لاسمٍ واحد" : "GHALIA — A small universe, for one name";
     document.querySelector<HTMLMetaElement>('meta[name="description"]')?.setAttribute("content", isArabic ? "تجربة سينمائية شخصية لغالية، مكتوبة في ضوء النجوم." : "A cinematic personal universe written for Ghalia in starlight.");
-    localStorage.setItem("ghalia-language", language);
   }, [isArabic, language]);
+
+  useEffect(() => {
+    const onPointerDown = (event: PointerEvent) => {
+      const id = Date.now() + Math.random();
+      setClickBursts((current) => [...current.slice(-5), { id, x: event.clientX, y: event.clientY }]);
+    };
+    window.addEventListener("pointerdown", onPointerDown, { passive: true });
+    return () => window.removeEventListener("pointerdown", onPointerDown);
+  }, []);
+
+  const removeBurst = (id: number) => setClickBursts((current) => current.filter((burst) => burst.id !== id));
 
   useEffect(() => {
     const sections = Array.from(document.querySelectorAll<HTMLElement>("[data-scene]"));
@@ -104,12 +115,13 @@ export default function Home() {
   return (
     <main className={`luxury-site ${isArabic ? "is-arabic" : "is-english"}`}>
       <div className="luxury-cosmos" aria-hidden="true"><Galaxy density={.82} glowIntensity={.26} flareIntensity={.7} starSpeed={.28} mouseRepulsion clickWarp starColors={["#F7F4ED", "#D7BD89", "#9288C4", "#A9C8DB"]} hueShift={154} saturation={0} starSize={.72} twinkleIntensity={.22} speed={.7} rotationSpeed={.055} layers={5} direction="forward" repulsionStrength={1.35} mouseInteraction intro lightMode={false} /><div className="cosmos-veil" /><div className="cosmos-grain" /></div>
+      <div className="click-bloom-layer" aria-hidden="true">{clickBursts.map((burst) => <span key={burst.id} className="click-bloom" style={{ left: burst.x, top: burst.y }} onAnimationEnd={() => removeBurst(burst.id)} />)}</div>
       <div className="progress-rail" aria-hidden="true"><span style={{ height: `${Math.max(8, progress * 100)}%` }} /></div>
 
       <header className="luxury-header">
         <button className="brand-lockup" type="button" onClick={() => scrollTo("#scene-home")} aria-label={isArabic ? "العودة إلى البداية" : "Return to beginning"}><span className="brand-mark"><i /><b /></span><span><strong>GHALIA</strong><small>{isArabic ? "أرشيف الضوء" : "THE LIGHT ARCHIVE"}</small></span></button>
         <nav className={`luxury-nav ${menuOpen ? "luxury-nav--open" : ""}`} aria-label={isArabic ? "التنقل الرئيسي" : "Primary navigation"}>{t.nav.map((label, index) => <button key={label} type="button" onClick={() => scrollTo(["#scene-home", "#scene-letter", "#scene-chapters", "#scene-constellation"][index])}><span>0{index + 1}</span>{label}</button>)}</nav>
-        <div className="header-tools"><button className="lang-button" type="button" onClick={() => setLanguage(language === "ar" ? "en" : "ar")} aria-label={isArabic ? "Switch to English" : "التبديل إلى العربية"}><Globe2 size={15} />{isArabic ? "EN" : "ع"}</button><button className="mobile-menu" type="button" onClick={() => setMenuOpen((value) => !value)} aria-label={menuOpen ? "Close menu" : "Open menu"}>{menuOpen ? <X size={19} /> : <Menu size={19} />}</button></div>
+        <div className="header-tools"><span className="language-lockup"><Globe2 size={15} />ENGLISH</span><button className="mobile-menu" type="button" onClick={() => setMenuOpen((value) => !value)} aria-label={menuOpen ? "Close menu" : "Open menu"}>{menuOpen ? <X size={19} /> : <Menu size={19} />}</button></div>
       </header>
 
       <section className="cinema-scene scene-home scene--visible" id="scene-home" data-scene aria-labelledby="hero-title">
@@ -139,7 +151,7 @@ export default function Home() {
         <div className="scene-bottom"><span>CONSTELLATION / 004</span><span>{isArabic ? "كل نقطة تحمل معنى" : "EVERY POINT HOLDS MEANING"}</span><span>∞</span></div>
       </section>
 
-      <section className="cinema-scene finale-scene" data-scene aria-labelledby="final-title"><div className="scene-index"><span>05</span><i /><small>{t.finalKicker}</small></div><div className="finale-layout"><div className="finale-sun"><span /><i /><i /><i /></div><div className="finale-copy"><p className="micro-label">{t.finalKicker}</p><h2 id="final-title">{t.finalTitle}</h2><p>{t.finalBody}</p><button className="text-action" type="button" onClick={() => scrollTo("#scene-home")}>{t.finalCta}<ArrowUpRight size={16} /></button></div></div><div className="scene-bottom"><span>GHALIA · 2026</span><span>{t.footer}</span><span>∞</span></div></section>
+      <section className="cinema-scene finale-scene" data-scene aria-labelledby="final-title"><div className="scene-index"><span>05</span><i /><small>{t.finalKicker}</small></div><div className="finale-layout"><figure className="space-photograph"><img src="/earth-from-space.jpg" alt="A real photograph of Earth from orbit, captured by NASA." /><figcaption><span>EARTH / ORBITAL FRAME</span><a href="https://svs.gsfc.nasa.gov/10766/" target="_blank" rel="noreferrer">NASA SVS ↗</a></figcaption></figure><div className="finale-copy"><p className="micro-label">{t.finalKicker}</p><h2 id="final-title">{t.finalTitle}</h2><p>{t.finalBody}</p><button className="text-action" type="button" onClick={() => scrollTo("#scene-home")}>{t.finalCta}<ArrowUpRight size={16} /></button></div></div><div className="scene-bottom"><span>GHALIA · 2026</span><span>{t.footer}</span><span>∞</span></div></section>
 
       <footer className="luxury-footer"><span>GHALIA / THE LIGHT ARCHIVE</span><span>{isArabic ? "صُنعت من ضوء هادئ" : "MADE FROM QUIET LIGHT"}</span><span>05—05</span></footer>
     </main>
