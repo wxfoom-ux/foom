@@ -1,6 +1,6 @@
 # GHALIA — Implementation TODO
 
-- [x] **Galaxy starfield foundation:** Integrated the supplied `Galaxy` React component as the persistent canvas background with depth layers, independent twinkle, subtle pointer parallax, reduced-motion support, click stardust bursts, gravitational ripples, and rare shooting stars.
+- [x] **Galaxy starfield foundation:** Integrated the supplied WebGL2 `Galaxy` React component as the persistent GPU background with layered depth, independent twinkle, pointer interaction and repulsion, click warp, intro reveal, direction/speed controls, visibility pausing, and reduced-motion support.
 - [x] **Cinematic bilingual opening:** Built the non-blocking opening sequence with `غالية`, `GHALIA`, `Some names are written in the stars.`, and `ادخلي إلى عالمك / Enter Your Universe`; the special GHALIA star opens the first emotional chapter.
 - [x] **Arabic and English system:** Arabic is the default; the language switch updates chapters, navigation, buttons, accessibility labels, document language, text direction, title, and descriptions without reloading or losing scroll position.
 - [x] **Main letter chapter:** Added `من بين كل النجوم / Among All the Stars` with the requested Arabic and literary English copy, presented as readable narrative moments.

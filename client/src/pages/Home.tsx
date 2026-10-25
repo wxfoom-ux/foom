@@ -59,7 +59,6 @@ export default function Home() {
   const [activeConstellation, setActiveConstellation] = useState(0);
   const [mobileNavOpen, setMobileNavOpen] = useState(false);
   const [entered, setEntered] = useState(false);
-  const [interactionPulse, setInteractionPulse] = useState(0);
   const t = copy[language];
   const isArabic = language === "ar";
 
@@ -90,10 +89,6 @@ export default function Home() {
     setEntered(true);
     window.setTimeout(() => document.querySelector("#letter")?.scrollIntoView({ behavior: "smooth", block: "start" }), 120);
   }, []);
-  const handleGalaxyInteraction = useCallback((interaction: { kind: "stardust" | "pointer" }) => {
-    if (interaction.kind === "stardust") setInteractionPulse((value) => value + 1);
-  }, []);
-
   const navItems = useMemo(() => [
     { href: "#letter", label: t.nav.story },
     { href: "#chapters", label: t.nav.chapters },
@@ -105,12 +100,10 @@ export default function Home() {
       <div className="cosmos-backdrop" aria-hidden="true">
         <div className="cosmos-aurora cosmos-aurora--one" />
         <div className="cosmos-aurora cosmos-aurora--two" />
-        <Galaxy density={1.05} glowIntensity={0.3} flareIntensity={1} starSpeed={0.5} mouseRepulsion clickWarp starColors={[]} hueShift={140} saturation={0} starSize={1} twinkleIntensity={0.3} speed={1} rotationSpeed={0.1} layers={4} direction="forward" repulsionStrength={2} mouseInteraction intro lightMode={false} ariaLabel={isArabic ? "سماء تفاعلية. انقري في الكون لصنع غبار نجمي." : "Interactive starfield. Click the universe to create stardust."} onInteraction={handleGalaxyInteraction} />
+        <Galaxy density={1.05} glowIntensity={0.3} flareIntensity={1} starSpeed={0.5} mouseRepulsion clickWarp starColors={[]} hueShift={140} saturation={0} starSize={1} twinkleIntensity={0.3} speed={1} rotationSpeed={0.1} layers={4} direction="forward" repulsionStrength={2} mouseInteraction intro lightMode={false} />
         <div className="cosmos-vignette" />
         <div className="cosmos-noise" />
       </div>
-      <div className={`interaction-signal ${interactionPulse ? "interaction-signal--active" : ""}`} key={interactionPulse} aria-hidden="true" />
-
       <header className="site-header">
         <a className="wordmark" href="#home" aria-label={isArabic ? "غالية — العودة إلى البداية" : "Ghalia — return to beginning"}>
           <span className="wordmark__orbit"><span /></span>
