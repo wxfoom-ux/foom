@@ -141,7 +141,7 @@ export default function InfiniteSpiral({ flowers, onSelect }: InfiniteSpiralProp
         movedRef.current = false;
       }}
       role="group"
-      aria-label="A moving spiral of photographs for Abeer"
+      aria-label="A moving cosmic orbit for Ghalia"
     >
       <div className="spiral__glow" aria-hidden="true" />
       <div className="spiral__stage" role="list">
@@ -152,7 +152,7 @@ export default function InfiniteSpiral({ flowers, onSelect }: InfiniteSpiralProp
             className="spiral__card"
             type="button"
             role="listitem"
-            aria-label={`${flower.title}. Select to read a note.`}
+            aria-label={`${flower.title}. Select to read a cosmic note.`}
             onClick={() => {
               targetRef.current = index;
               onSelect(index);
@@ -163,10 +163,10 @@ export default function InfiniteSpiral({ flowers, onSelect }: InfiniteSpiralProp
           </button>
         ))}
       </div>
-      <div className="spiral__controls" aria-label="Choose a photograph">
-        <button type="button" onClick={() => moveBy(-1)} aria-label="Previous photograph">←</button>
-        <span>DRAG TO WANDER</span>
-        <button type="button" onClick={() => moveBy(1)} aria-label="Next photograph">→</button>
+      <div className="spiral__controls" aria-label="Choose a cosmic scene">
+        <button type="button" onClick={() => moveBy(-1)} aria-label="Previous cosmic scene">←</button>
+        <span>DRAG TO ORBIT</span>
+        <button type="button" onClick={() => moveBy(1)} aria-label="Next cosmic scene">→</button>
       </div>
     </div>
   );
