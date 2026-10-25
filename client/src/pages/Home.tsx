@@ -1,128 +1,191 @@
-import { useState, type MouseEvent } from "react";
-import { ArrowDown, ArrowUpRight, CircleDotDashed, Heart, Moon, Sparkles, Telescope } from "lucide-react";
-import InfiniteSpiral from "@/components/InfiniteSpiral";
-import RippleDistortion from "@/components/RippleDistortion";
+import { useCallback, useEffect, useMemo, useState } from "react";
+import { ArrowDown, ArrowUpRight, Globe2, Menu, Minus, Plus, Sparkles, X } from "lucide-react";
+import Galaxy from "@/components/Galaxy";
 
-const moments = [
-  { src: "/ghalia-galaxy.jpg", alt: "A glowing spiral galaxy in violet and rose light", title: "A galaxy made of wonder", note: "Somehow, every beautiful thing in the universe feels a little brighter when I think of you." },
-  { src: "/ghalia-black-hole.jpg", alt: "A dreamy black hole with a luminous accretion disk", title: "Your gravity is different", note: "You have the kind of pull that makes every ordinary moment slow down and feel worth keeping." },
-  { src: "/ghalia-cosmic-hero.jpg", alt: "A soft blue and violet nebula glowing among the stars", title: "Soft light, everywhere", note: "Even the quietest corner of space would feel warm if it carried a little of your kindness." },
-  { src: "/ghalia-galaxy.jpg", alt: "A spiral galaxy floating in deep indigo space", title: "My favorite constellation", note: "If I mapped the sky by the things I love, your name would be the brightest constellation." },
-  { src: "/ghalia-black-hole.jpg", alt: "A luminous black hole surrounded by starlight", title: "A beautiful mystery", note: "You are proof that the loveliest things do not need to explain themselves to be felt." },
-  { src: "/ghalia-cosmic-hero.jpg", alt: "A heart-like nebula in a field of tiny stars", title: "A little universe for you", note: "No distance is too far for a small message: you are precious, you are loved, and you are never alone." },
+type Language = "ar" | "en";
+
+type Copy = {
+  nav: { story: string; chapters: string; constellation: string };
+  hero: { overline: string; title: string; english: string; subtitle: string; cta: string; hint: string };
+  letter: { kicker: string; title: string; body: string[]; aside: string };
+  chapters: { kicker: string; title: string; intro: string; open: string; close: string };
+  constellation: { kicker: string; title: string; intro: string; hint: string };
+  closing: { kicker: string; title: string; body: string; cta: string };
+  footer: string;
+};
+
+const copy: Record<Language, Copy> = {
+  ar: {
+    nav: { story: "الرسالة", chapters: "الفصول", constellation: "الكوكبة" },
+    hero: { overline: "مجرة صغيرة، لاسم واحد", title: "غالية", english: "GHALIA", subtitle: "Some names are written in the stars.", cta: "ادخلي إلى عالمك", hint: "المسّي نجمة غالية أو انقري في أي مكان خالٍ" },
+    letter: { kicker: "الفصل الأول · من بين كل النجوم", title: "من بين كل النجوم", body: ["إنني أريدكِ أنتِ بالتحديد.", "لم يعد لديّ وصف محدد للشخص الذي قد يفضّله قلبي، فقد تجاوزتُ لأجلكِ كل القواعد التي ظننتُ أنني لن أتجاوزها يومًا.", "من بين مئات الوجوه، ومن بين كل الذين مرّوا في حياتي، لم يمِل قلبي إلا إليكِ، ولم تعرف عيناي ذلك القدر من السعادة إلا حين رأتاكِ.", "وكل ما تمنّيته يومًا، أن تكوني أنتِ...", "أنتِ، ولا أحد غيركِ."], aside: "هناك نجوم لا نحتاج إلى الوصول إليها كي نهتدي بها." },
+    chapters: { kicker: "خريطة ضوء", title: "أشياء لا تُقال", intro: "بعض المعاني لا تصل في جملة واحدة. اتركي لكل فصل لحظته، ودعي الضوء يكمل ما بين السطور.", open: "افتحي الفصل", close: "أغلقي الفصل" },
+    constellation: { kicker: "فصل الكوكبة · اضغطي على النجوم", title: "بعض الأضواء لا تخبو", intro: "كل نقطة هنا تحمل جملة صغيرة. اختاري نجمة، أو تنقّلي بينها بلوحة المفاتيح.", hint: "مرّري المؤشر فوق النجوم أو المسّيها" },
+    closing: { kicker: "إلى غالية", title: "بعض الأسماء تجعل الكون أجمل.", body: "هذه ليست محاولة لاختصار الكون في اسمكِ، بل محاولة صغيرة لأقول إن وجودكِ يترك في هذا العالم ضوءًا لا يشبه سواه.", cta: "عودي إلى البداية" },
+    footer: "صُنعت من ضوء هادئ، خصيصًا لغالية.",
+  },
+  en: {
+    nav: { story: "The letter", chapters: "Chapters", constellation: "Constellation" },
+    hero: { overline: "A small galaxy, for one name", title: "Ghalia", english: "GHALIA", subtitle: "Some names are written in the stars.", cta: "Enter your universe", hint: "Touch Ghalia's star, or click anywhere in the quiet" },
+    letter: { kicker: "Chapter one · Among All the Stars", title: "Among All the Stars", body: ["I wanted you.", "You, specifically.", "I no longer had a list of qualities for the person my heart would choose. Somehow, for you, I crossed every boundary I once believed I never would.", "Among hundreds of faces, among all the people who came and went, my heart found its way only to you. And nothing brought quite the same happiness to my eyes as the sight of you.", "Of all the things I ever wished for, it was you. You, and no one else."], aside: "There are stars we never need to reach in order to find our way." },
+    chapters: { kicker: "A map of light", title: "Things left unsaid", intro: "Some meanings do not arrive in a single sentence. Let each chapter have its moment, and let the light finish what lives between the lines.", open: "Open chapter", close: "Close chapter" },
+    constellation: { kicker: "Constellation chapter · choose a star", title: "Some lights never fade", intro: "Each point carries a small sentence. Choose a star, or move through them with your keyboard.", hint: "Hover or touch the stars" },
+    closing: { kicker: "To Ghalia", title: "Some names make the universe more beautiful.", body: "This is not an attempt to fit the entire universe into your name. It is simply a small way of saying that your presence leaves behind a light unlike any other.", cta: "Return to the beginning" },
+    footer: "Made from quiet light, especially for Ghalia.",
+  },
+};
+
+const chapters = [
+  { id: "01", arTitle: "أشياء لا تُقال", enTitle: "Things Left Unsaid", ar: "هناك أشخاص لا يمرّون في حياتنا مرورًا عابرًا، بل يتركون في أرواحنا ضوءًا لا يشبه أي ضوء.", en: "Some people do not simply pass through our lives. They leave behind a light unlike any other.", accent: "gold" },
+  { id: "02", arTitle: "بين المجرّات", enTitle: "Between Galaxies", ar: "لو أن لهذا الكون ذاكرة، لاحتفظت نجومه باسمكِ، كما احتفظت ذاكرتي بأجمل التفاصيل.", en: "If the universe could remember, its stars would carry your name, just as my memory carries the loveliest details.", accent: "lavender" },
+  { id: "03", arTitle: "النجمة التي لا تشبه سواها", enTitle: "The Star Unlike Any Other", ar: "ليست كل النجوم بعيدة، فبعضها يترك ضوءه في قلوبنا، حتى وإن حالت بيننا وبينه المسافات.", en: "Not every star is truly distant. Some leave their light within us, even when miles lie between us.", accent: "ice" },
+  { id: "04", arTitle: "أمنية صغيرة", enTitle: "A Small Wish", ar: "لم أكن أتمنى أن يتوقف الزمن، بل تمنّيت فقط أن تطول اللحظات الجميلة، وأن تبقى ذكراها دافئة مهما ابتعدت.", en: "I never wished for time to stop. I only wished the beautiful moments could last a little longer, and that their memory would remain warm across any distance.", accent: "gold" },
+  { id: "05", arTitle: "إلى غالية", enTitle: "To Ghalia", ar: "هذه ليست محاولة لاختصار الكون في اسمكِ، بل محاولة صغيرة لأقول إن بعض الأسماء تجعل هذا الكون أجمل.", en: "This is not an attempt to fit the entire universe into your name. It is simply a small way of saying that some names make the universe more beautiful.", accent: "lavender" },
 ];
 
-const explorationObjects = [
-  { name: "Mercury", kind: "PLANET · ROCKY", color: "#b9a3ff", metric: "4,879 km", metricLabel: "diameter", detail: "The smallest planet and the closest to the Sun.", fact: "One orbit takes 88 Earth days.", source: "https://nssdc.gsfc.nasa.gov/planetary/factsheet/" },
-  { name: "Venus", kind: "PLANET · ROCKY", color: "#ffb38a", metric: "12,104 km", metricLabel: "diameter", detail: "A rocky world wrapped in a dense carbon-dioxide atmosphere.", fact: "Its orbital period is 224.7 Earth days.", source: "https://nssdc.gsfc.nasa.gov/planetary/factsheet/" },
-  { name: "Earth", kind: "PLANET · ROCKY", color: "#8adfff", metric: "12,756 km", metricLabel: "diameter", detail: "Our home world and the only planet currently known to host life.", fact: "One orbit takes 365.2 days.", source: "https://nssdc.gsfc.nasa.gov/planetary/factsheet/" },
-  { name: "Mars", kind: "PLANET · ROCKY", color: "#ff8f9e", metric: "6,792 km", metricLabel: "diameter", detail: "The fourth planet, with two small moons: Phobos and Deimos.", fact: "Its year lasts 687 Earth days.", source: "https://science.nasa.gov/solar-system/planets/" },
-  { name: "Jupiter", kind: "PLANET · GAS GIANT", color: "#ffd28a", metric: "142,984 km", metricLabel: "diameter", detail: "The largest planet in our solar system.", fact: "Its orbital period is about 11.86 Earth years.", source: "https://science.nasa.gov/solar-system/planets/" },
-  { name: "Saturn", kind: "PLANET · GAS GIANT", color: "#ffe6a8", metric: "120,536 km", metricLabel: "diameter", detail: "A gas giant famous for its bright, extensive ring system.", fact: "Its orbital period is about 29.45 Earth years.", source: "https://science.nasa.gov/solar-system/planets/" },
-  { name: "Uranus", kind: "PLANET · ICE GIANT", color: "#9ff4ed", metric: "51,118 km", metricLabel: "diameter", detail: "An ice giant with a rotation axis tilted about 98 degrees.", fact: "One orbit takes about 84 Earth years.", source: "https://nssdc.gsfc.nasa.gov/planetary/factsheet/" },
-  { name: "Neptune", kind: "PLANET · ICE GIANT", color: "#709bff", metric: "49,528 km", metricLabel: "diameter", detail: "The most distant planet from the Sun.", fact: "Its orbital period is about 164.8 Earth years.", source: "https://science.nasa.gov/solar-system/planets/" },
-  { name: "Stellar-mass", kind: "BLACK HOLE · STELLAR", color: "#ff9acb", metric: "3.8+ Suns", metricLabel: "known lower mass", detail: "A black hole can form when a massive star ends its life and its core collapses.", fact: "Its event horizon is the boundary beyond which light cannot escape.", source: "https://science.nasa.gov/universe/black-holes/" },
-  { name: "Sagittarius A*", kind: "BLACK HOLE · SUPERMASSIVE", color: "#c8b6ff", metric: "≈4 million", metricLabel: "solar masses", detail: "The supermassive black hole at the center of the Milky Way.", fact: "Astronomers study it through the orbits of nearby stars and its effect on matter around it.", source: "https://science.nasa.gov/universe/black-holes/" },
-];
-
-const notes = [
-  { number: "01", title: "For the way you light up a room", text: "You arrive, and somehow even the atmosphere changes. Being near you feels like finding a warm star in a very big sky." },
-  { number: "02", title: "For the laugh I would know anywhere", text: "I hope the universe keeps sending you reasons to laugh today. And if it forgets, I will gladly become one." },
-  { number: "03", title: "For the little things that are everything", text: "Your kindness, your spark, the way you notice what others miss — I keep these small miracles close, like constellations." },
-];
-
-const personalMessages = [
-  { label: "A note from a quiet orbit", title: "You are my favorite light", text: "Dear Ghalia, there is a softness in you that makes even the busiest day feel calm. You make people feel seen, and that is a rare kind of magic." },
-  { label: "For an ordinary night", title: "You make the everyday glow", text: "Dear Ghalia, if I could give you one thing, it would be the chance to see yourself the way I do: warm, thoughtful, and quietly radiant." },
-  { label: "Kept in my constellation", title: "Your gravity feels like home", text: "Dear Ghalia, wherever life takes us, I hope you never doubt this: your happiness matters deeply, and I am endlessly glad that you are exactly who you are." },
-  { label: "A message across the stars", title: "You are never too far", text: "Dear Ghalia, some people feel close even across galaxies. You are one of them — a little piece of home I can find anywhere." },
-  { label: "For the days that run long", title: "Your light stays with me", text: "Dear Ghalia, even after a long day, remembering your smile makes the universe feel softer around the edges. I hope some of that warmth finds its way back to you." },
-  { label: "No occasion needed", title: "Just because it is you", text: "Dear Ghalia, this note has no grand reason. I simply wanted you to know that you matter to me, and that being yourself is already more than enough." },
+const constellationMessages = [
+  { ar: "بعض الأضواء لا تخبو.", en: "Some lights never fade." },
+  { ar: "في المسافة أيضًا، أثرٌ للحنين.", en: "Distance has its own kind of longing." },
+  { ar: "ما يبقى ليس دائمًا ما نلمسه.", en: "What remains is not always what we can touch." },
+  { ar: "اسمكِ نقطة هادئة في اتساع العالم.", en: "Your name is a quiet point in a very wide world." },
 ];
 
 export default function Home() {
-  const [activeBloom, setActiveBloom] = useState(0);
-  const [openNote, setOpenNote] = useState<number | null>(null);
-  const [openPersonalMessage, setOpenPersonalMessage] = useState<number | null>(null);
-  const [activeExplorer, setActiveExplorer] = useState(2);
-  const [copied, setCopied] = useState(false);
-  const [clickBursts, setClickBursts] = useState<Array<{ id: number; x: number; y: number }>>([]);
+  const [language, setLanguage] = useState<Language>(() => {
+    if (typeof window === "undefined") return "ar";
+    return window.localStorage.getItem("ghalia-language") === "en" ? "en" : "ar";
+  });
+  const [openChapter, setOpenChapter] = useState<number | null>(0);
+  const [activeConstellation, setActiveConstellation] = useState(0);
+  const [mobileNavOpen, setMobileNavOpen] = useState(false);
+  const [entered, setEntered] = useState(false);
+  const [interactionPulse, setInteractionPulse] = useState(0);
+  const t = copy[language];
+  const isArabic = language === "ar";
 
-  const handleCosmicClick = (event: MouseEvent<HTMLElement>) => {
-    const target = event.target as HTMLElement;
-    if (target.closest("a, button, input, textarea, select")) return;
-    const burst = { id: Date.now() + Math.random(), x: event.clientX, y: event.clientY };
-    setClickBursts(current => [...current.slice(-2), burst]);
-    window.setTimeout(() => setClickBursts(current => current.filter(item => item.id !== burst.id)), 900);
-  };
+  useEffect(() => {
+    document.documentElement.lang = language;
+    document.documentElement.dir = isArabic ? "rtl" : "ltr";
+    document.title = isArabic ? "غالية — عالمكِ مكتوب في النجوم" : "GHALIA — A Universe Written in Starlight";
+    const description = document.querySelector<HTMLMetaElement>('meta[name="description"]');
+    if (description) description.content = isArabic ? "غالية — عالم شخصي مكتوب في النجوم، بتجربة فضائية سينمائية ثنائية اللغة." : "Ghalia — a personal universe written in the stars, built as a bilingual cinematic experience.";
+    const socialDescription = document.querySelector<HTMLMetaElement>('meta[property="og:description"]');
+    if (socialDescription) socialDescription.content = isArabic ? "Some names are written in the stars." : "A cinematic universe written for Ghalia.";
+    window.localStorage.setItem("ghalia-language", language);
+  }, [isArabic, language]);
 
-  const shareGarden = async () => {
-    try {
-      await navigator.clipboard.writeText(window.location.href);
-      setCopied(true);
-      window.setTimeout(() => setCopied(false), 2200);
-    } catch { setCopied(false); }
-  };
+  useEffect(() => {
+    const targets = document.querySelectorAll<HTMLElement>(".reveal-on-scroll");
+    const observer = new IntersectionObserver((entries) => {
+      entries.forEach((entry) => {
+        if (entry.isIntersecting) entry.target.classList.add("is-visible");
+      });
+    }, { threshold: 0.14 });
+    targets.forEach((target) => observer.observe(target));
+    return () => observer.disconnect();
+  }, []);
+
+  const toggleLanguage = () => setLanguage((current) => current === "ar" ? "en" : "ar");
+  const enterUniverse = useCallback(() => {
+    setEntered(true);
+    window.setTimeout(() => document.querySelector("#letter")?.scrollIntoView({ behavior: "smooth", block: "start" }), 120);
+  }, []);
+  const handleGalaxyInteraction = useCallback((interaction: { kind: "stardust" | "pointer" }) => {
+    if (interaction.kind === "stardust") setInteractionPulse((value) => value + 1);
+  }, []);
+
+  const navItems = useMemo(() => [
+    { href: "#letter", label: t.nav.story },
+    { href: "#chapters", label: t.nav.chapters },
+    { href: "#constellation", label: t.nav.constellation },
+  ], [t]);
 
   return (
-    <main className="garden-shell cosmic-shell" onClick={handleCosmicClick}>
-      <div className="starfield" aria-hidden="true" />
-      <div className="meteor-field" aria-hidden="true">{Array.from({ length: 14 }, (_, index) => <i key={index} className={`meteor meteor--${index + 1}`} />)}</div>
-      {clickBursts.map(burst => <span className="click-burst" key={burst.id} style={{ left: burst.x, top: burst.y }} aria-hidden="true">{Array.from({ length: 12 }, (_, index) => <i key={index} />)}</span>)}
-      <div className="ripple-backdrop" aria-hidden="true">
-        <RippleDistortion src="/ghalia-cosmic-hero.jpg" brushSize={150} strength={0.2} swirl={1} rings={4} grayscale={false} spread={5} fade={3} spacing={15} dispersion={0} glint={0.2} tint="#8b5cf6" tintAmount={0.1} highlightColor="#ffffff" trigger="hover" clickStrength={2} quality="low" enabled className="ripple-backdrop__surface" />
+    <main className={`cosmos-shell ${entered ? "cosmos-shell--entered" : ""} ${isArabic ? "is-arabic" : "is-english"}`}>
+      <div className="cosmos-backdrop" aria-hidden="true">
+        <div className="cosmos-aurora cosmos-aurora--one" />
+        <div className="cosmos-aurora cosmos-aurora--two" />
+        <Galaxy density={1.05} glowIntensity={0.3} flareIntensity={1} starSpeed={0.5} mouseRepulsion clickWarp starColors={[]} hueShift={140} saturation={0} starSize={1} twinkleIntensity={0.3} speed={1} rotationSpeed={0.1} layers={4} direction="forward" repulsionStrength={2} mouseInteraction intro lightMode={false} ariaLabel={isArabic ? "سماء تفاعلية. انقري في الكون لصنع غبار نجمي." : "Interactive starfield. Click the universe to create stardust."} onInteraction={handleGalaxyInteraction} />
+        <div className="cosmos-vignette" />
+        <div className="cosmos-noise" />
       </div>
-      <header className="topbar">
-        <a className="brand" href="#home" aria-label="Cosmic Ghalia home">
-          <span className="brand__seal"><Moon size={19} strokeWidth={1.5} /></span>
-          <span className="brand__words"><strong>cosmic, Ghalia</strong><small>A little universe for you</small></span>
+      <div className={`interaction-signal ${interactionPulse ? "interaction-signal--active" : ""}`} key={interactionPulse} aria-hidden="true" />
+
+      <header className="site-header">
+        <a className="wordmark" href="#home" aria-label={isArabic ? "غالية — العودة إلى البداية" : "Ghalia — return to beginning"}>
+          <span className="wordmark__orbit"><span /></span>
+          <span><strong>GHALIA</strong><small>{isArabic ? "كونٌ مكتوب من ضوء" : "A universe in starlight"}</small></span>
         </a>
-        <nav className="main-nav" aria-label="Main navigation">
-          <a href="#garden">The cosmos</a><a href="#explorer">Explore</a><a href="#little-things">Little stars</a><a href="#love-letters">Sweet messages</a>
+        <nav className={`site-nav ${mobileNavOpen ? "site-nav--open" : ""}`} aria-label={isArabic ? "التنقل الرئيسي" : "Primary navigation"}>
+          {navItems.map((item) => <a key={item.href} href={item.href} onClick={() => setMobileNavOpen(false)}>{item.label}</a>)}
         </nav>
-        <button className="share-button" type="button" onClick={shareGarden}>{copied ? "Copied across the stars" : "Share this universe"}<ArrowUpRight size={15} /></button>
+        <div className="header-actions">
+          <button className="language-toggle" type="button" onClick={toggleLanguage} aria-label={isArabic ? "Switch to English" : "التبديل إلى العربية"}>
+            <Globe2 size={15} strokeWidth={1.4} /><span>{isArabic ? "EN" : "ع"}</span>
+          </button>
+          <button className="menu-toggle" type="button" aria-expanded={mobileNavOpen} aria-label={mobileNavOpen ? (isArabic ? "إغلاق القائمة" : "Close menu") : (isArabic ? "فتح القائمة" : "Open menu")} onClick={() => setMobileNavOpen((value) => !value)}>
+            {mobileNavOpen ? <X size={20} /> : <Menu size={20} />}
+          </button>
+        </div>
       </header>
 
-      <section className="hero" id="home" aria-labelledby="hero-title">
-        <div className="hero__copy">
-          <div className="eyebrow"><span className="eyebrow__line" />A SMALL UNIVERSE FOR GHALIA <span className="eyebrow__sparkle">✦</span></div>
-          <h1 id="hero-title">For you,<br /><em>Ghalia.</em></h1>
-          <p className="hero__lead">Somewhere between a shooting star and a soft little moon, there is a whole universe of sweet words for you.</p>
-          <a className="round-cta" href="#garden"><span>Wander through<br />your cosmos</span><i><ArrowDown size={18} /></i></a>
-          <span className="hero__scribble" aria-hidden="true">you are my favorite sky</span>
+      <section className="hero-section" id="home" aria-labelledby="hero-title">
+        <div className="hero-meta"><span>01</span><span className="meta-line" /><span>{isArabic ? "رحلة شخصية عبر الفضاء" : "A personal journey through space"}</span></div>
+        <div className="hero-copy">
+          <p className="eyebrow">{t.hero.overline}</p>
+          <h1 id="hero-title"><span>{t.hero.title}</span><em>{t.hero.english}</em></h1>
+          <p className="hero-subtitle">{t.hero.subtitle}</p>
+          <button className="hero-cta" type="button" onClick={enterUniverse}><span>{t.hero.cta}</span><ArrowDown size={17} strokeWidth={1.2} /></button>
+          <p className="hero-hint"><span className="hero-hint__dot" />{t.hero.hint}</p>
         </div>
-        <div className="hero__art">
-          <div className="hero__photo-wrap"><img src="/ghalia-cosmic-hero.jpg" alt="A glowing nebula and stars made for Ghalia" fetchPriority="high" /><div className="hero__photo-glaze" /><div className="hero__caption"><span>01 / A PLACE TO BEGIN</span><span>Made for your kind of magic</span></div></div>
-          <div className="hero__stamp" aria-label="Made with love"><Heart size={14} fill="currentColor" /><span>made<br />with starlight</span></div>
-          <div className="hero__flower-mark" aria-hidden="true">✦</div>
-        </div>
-        <div className="hero__footnote"><span>SCROLL A LITTLE</span><span className="hero__footnote-line" /></div>
+        <button className="ghalia-star" type="button" onClick={enterUniverse} aria-label={isArabic ? "نجمة غالية — افتحي الرحلة" : "Ghalia star — open the journey"}>
+          <span className="ghalia-star__halo" /><span className="ghalia-star__core" /><span className="ghalia-star__label"><strong>GHALIA</strong><small>غالية</small></span>
+        </button>
+        <div className="hero-footer"><span>LAT 140° · LONG 36°</span><span className="hero-footer__scroll"><span />{isArabic ? "مرّري لاكتشاف المزيد" : "Scroll to discover"}</span><span>EST. IN STARLIGHT</span></div>
       </section>
 
-      <section className="intro-strip" aria-label="A note for Ghalia"><span className="intro-strip__ornament">✦</span><p>Some people make the whole universe feel more <em>beautiful.</em><br className="desktop-break" /> You have always been one of them.</p><span className="intro-strip__signature">A little truth, just for you <Heart size={13} /></span></section>
-
-      <section className="garden-section" id="garden" aria-labelledby="garden-title">
-        <div className="section-heading"><div className="eyebrow"><span className="eyebrow__line" />TAKE YOUR TIME</div><h2 id="garden-title">A few wonders<br /><em>I keep close</em> when<br />I think of you.</h2><p>Every scene holds a small thought.<br />Choose one, and let it tell you.</p><span className="section-heading__flower" aria-hidden="true">✧</span></div>
-        <div className="garden-gallery"><InfiniteSpiral flowers={moments} onSelect={setActiveBloom} /><div className="bloom-note" aria-live="polite" key={activeBloom}><span className="bloom-note__index">A COSMIC THOUGHT · {String(activeBloom + 1).padStart(2, "0")}</span><h3>{moments[activeBloom].title}</h3><p>{moments[activeBloom].note}</p><span className="bloom-note__rule" /></div><div className="gallery-side-note" aria-hidden="true"><span>ROTATE GENTLY</span><span>✦</span></div></div>
-      </section>
-
-      <section className="explorer-section" id="explorer" aria-labelledby="explorer-title">
-        <div className="explorer-heading"><div className="eyebrow"><span className="eyebrow__line" />A POCKET ATLAS</div><h2 id="explorer-title">Explore the<br /><em>real cosmos.</em></h2><p>Choose a world or a black hole to reveal a compact, NASA-sourced fact card.</p><div className="explorer-tabs"><button className="explorer-tab explorer-tab--active" type="button">Planets &amp; black holes</button></div></div>
-        <div className="explorer-panel">
-          <div className="explorer-orbit" aria-hidden="true"><span className="explorer-orbit__core" style={{ background: explorationObjects[activeExplorer].color }} /><span className="explorer-orbit__ring explorer-orbit__ring--one" /><span className="explorer-orbit__ring explorer-orbit__ring--two" /><span className="explorer-orbit__dot" /></div>
-          <div className="explorer-detail"><span className="explorer-detail__kind">{explorationObjects[activeExplorer].kind}</span><h3>{explorationObjects[activeExplorer].name}</h3><p>{explorationObjects[activeExplorer].detail}</p><div className="explorer-metric"><strong>{explorationObjects[activeExplorer].metric}</strong><span>{explorationObjects[activeExplorer].metricLabel}</span></div><p className="explorer-detail__fact">{explorationObjects[activeExplorer].fact}</p><a href={explorationObjects[activeExplorer].source} target="_blank" rel="noreferrer">Read the NASA source ↗</a></div>
+      <section className="letter-section section-shell reveal-on-scroll" id="letter" aria-labelledby="letter-title">
+        <div className="section-number">02 <span /></div>
+        <div className="letter-aside"><span className="vertical-label">{isArabic ? "رسالة عبر المسافة" : "A letter across distance"}</span><span className="aside-orbit" /></div>
+        <div className="letter-content">
+          <p className="section-kicker">{t.letter.kicker}</p>
+          <h2 id="letter-title">{t.letter.title}</h2>
+          <div className="letter-body">{t.letter.body.map((paragraph, index) => <p className={index === 0 || index === t.letter.body.length - 1 ? "letter-body__emphasis" : ""} key={paragraph}>{paragraph}</p>)}</div>
+          <div className="letter-signature"><span className="signature-line" /><span>{t.letter.aside}</span></div>
         </div>
-        <div className="explorer-rail" role="list" aria-label="Choose a planet or black hole">{explorationObjects.map((object, index) => <button key={object.name} className={`explorer-chip ${activeExplorer === index ? "explorer-chip--active" : ""}`} type="button" onClick={() => setActiveExplorer(index)} aria-pressed={activeExplorer === index}><span className="explorer-chip__orb" style={{ background: object.color }} />{object.name}</button>)}</div>
-        <p className="explorer-source-note">Core facts checked against NASA’s <a href="https://science.nasa.gov/solar-system/planets/" target="_blank" rel="noreferrer">planet guide</a>, <a href="https://nssdc.gsfc.nasa.gov/planetary/factsheet/" target="_blank" rel="noreferrer">Planetary Fact Sheet</a>, and <a href="https://science.nasa.gov/universe/black-holes/" target="_blank" rel="noreferrer">Black Hole Basics</a>.</p>
+        <div className="letter-marker" aria-hidden="true"><span>∞</span><small>GHALIA</small></div>
       </section>
 
-      <section className="notes-section" id="little-things" aria-labelledby="notes-title"><div className="notes-section__header"><div><div className="eyebrow"><span className="eyebrow__line" />KEPT IN ORBIT, ALWAYS</div><h2 id="notes-title">Little star notes<br /><em>for the in-between.</em></h2></div><p>For no particular reason.<br />For every reason, really.</p></div><div className="notes-list">{notes.map((note, index) => <article className={`note-card ${openNote === index ? "note-card--open" : ""}`} key={note.number}><span className="note-card__number">{note.number}</span><div className="note-card__body"><h3>{note.title}</h3><div className="note-card__reveal" aria-hidden={openNote !== index}><p>{note.text}</p></div></div><button className="note-card__toggle" type="button" aria-expanded={openNote === index} onClick={() => setOpenNote(openNote === index ? null : index)}><span className="sr-only">{openNote === index ? "Close star note" : "Open star note"}</span><span aria-hidden="true">{openNote === index ? "−" : "+"}</span></button><span className="note-card__petal" aria-hidden="true">{index === 1 ? "✦" : "✧"}</span></article>)}</div><div className="notes-section__whisper"><Sparkles size={14} /> The best things shine without a special occasion.</div></section>
+      <section className="chapters-section section-shell reveal-on-scroll" id="chapters" aria-labelledby="chapters-title">
+        <div className="chapters-intro"><p className="section-kicker">{t.chapters.kicker}</p><h2 id="chapters-title">{t.chapters.title}<span>·</span></h2><p>{t.chapters.intro}</p></div>
+        <div className="chapters-list">
+          {chapters.map((chapter, index) => {
+            const active = openChapter === index;
+            return <article className={`chapter-card chapter-card--${chapter.accent} ${active ? "chapter-card--open" : ""}`} key={chapter.id}>
+              <button type="button" className="chapter-trigger" onClick={() => setOpenChapter(active ? null : index)} aria-expanded={active} aria-controls={`chapter-copy-${chapter.id}`}>
+                <span className="chapter-id">{chapter.id}</span><span className="chapter-title"><strong>{isArabic ? chapter.arTitle : chapter.enTitle}</strong><small>{isArabic ? chapter.enTitle : chapter.arTitle}</small></span><span className="chapter-action">{active ? <Minus size={16} /> : <Plus size={16} />}<span className="sr-only">{active ? t.chapters.close : t.chapters.open}</span></span>
+              </button>
+              <div className="chapter-copy" id={`chapter-copy-${chapter.id}`} aria-hidden={!active}><p>{isArabic ? chapter.ar : chapter.en}</p></div>
+            </article>;
+          })}
+        </div>
+      </section>
 
-      <section className="personal-letters" id="love-letters" aria-labelledby="personal-letters-title"><div className="personal-letters__heading"><div className="eyebrow"><span className="eyebrow__line" />JUST BETWEEN THE STARS</div><h2 id="personal-letters-title">Little messages,<br /><em>meant for Ghalia.</em></h2><p>Choose a planet, open a note, and keep the words that feel like yours.</p></div><div className="personal-letters__grid">{personalMessages.map((message, index) => { const isOpen = openPersonalMessage === index; return <article className={`personal-letter ${isOpen ? "personal-letter--open" : ""}`} key={message.title}><span className="personal-letter__label">{message.label}</span><span className="personal-letter__ornament" aria-hidden="true">{index === 1 ? "◌" : "✦"}</span><span className="personal-letter__burst" aria-hidden="true"><i>✦</i><i>✧</i><i>·</i></span><h3>{message.title}</h3><div className="personal-letter__reveal" aria-hidden={!isOpen}><p>{message.text}</p></div><button className="personal-letter__toggle" type="button" aria-expanded={isOpen} onClick={() => setOpenPersonalMessage(isOpen ? null : index)}><Heart size={15} fill={isOpen ? "currentColor" : "none"} />{isOpen ? "Fold this message" : "Open your message"}</button></article>; })}</div></section>
+      <section className="constellation-section section-shell reveal-on-scroll" id="constellation" aria-labelledby="constellation-title">
+        <div className="constellation-copy"><p className="section-kicker">{t.constellation.kicker}</p><h2 id="constellation-title">{t.constellation.title}</h2><p>{t.constellation.intro}</p><span className="constellation-hint"><Sparkles size={15} strokeWidth={1.2} />{t.constellation.hint}</span><div className="constellation-message" aria-live="polite"><span>0{activeConstellation + 1}</span><p>{isArabic ? constellationMessages[activeConstellation].ar : constellationMessages[activeConstellation].en}</p></div></div>
+        <div className="constellation-map" role="group" aria-label={isArabic ? "كوكبة غالية التفاعلية" : "Interactive Ghalia constellation"}>
+          <svg className="constellation-lines" viewBox="0 0 600 440" aria-hidden="true"><path d="M78 312 L164 182 L284 245 L391 100 L510 168 L456 332 L284 245 L206 390" /><path d="M164 182 L391 100" /><path d="M284 245 L456 332" /></svg>
+          {[{ x: "27%", y: "70%" }, { x: "41%", y: "41%" }, { x: "59%", y: "55%" }, { x: "76%", y: "23%" }, { x: "85%", y: "38%" }, { x: "76%", y: "75%" }, { x: "34%", y: "89%" }].map((position, index) => <button type="button" key={`${position.x}-${position.y}`} className={`constellation-star ${index === 2 ? "constellation-star--center" : ""} ${activeConstellation === index % constellationMessages.length ? "constellation-star--active" : ""}`} style={{ left: position.x, top: position.y }} onClick={() => setActiveConstellation(index % constellationMessages.length)} onFocus={() => setActiveConstellation(index % constellationMessages.length)} onKeyDown={(event) => { if (event.key === "ArrowRight" || event.key === "ArrowDown") { event.preventDefault(); setActiveConstellation((index + 1) % constellationMessages.length); } if (event.key === "ArrowLeft" || event.key === "ArrowUp") { event.preventDefault(); setActiveConstellation((index - 1 + constellationMessages.length) % constellationMessages.length); } }} aria-label={`${isArabic ? "رسالة الكوكبة" : "Constellation message"} ${index + 1}`}><span /></button>)}
+          <span className="map-caption map-caption--one">GHALIA / غالية</span><span className="map-caption map-caption--two">03 · 18 · ∞</span>
+        </div>
+      </section>
 
-      <section className="letter-section" id="letter" aria-labelledby="letter-title"><div className="letter-section__backdrop" aria-hidden="true" /><div className="letter-card"><div className="letter-card__top"><span>ONE LAST SIGNAL</span><Telescope size={15} /></div><span className="letter-card__small-flower" aria-hidden="true">✦</span><h2 id="letter-title">If every star<br />in the universe went quiet,</h2><p className="letter-card__verse">I would still find a way to tell you<br />how glad I am that <em>you</em> are here.</p><div className="letter-card__divider"><span />✧<span /></div><p className="letter-card__dedication">For Ghalia, with all my heart.</p><span className="letter-card__signoff">always, always</span></div><div className="letter-section__side-note">AN ENDING? <span>NOT EVEN CLOSE.</span></div></section>
+      <section className="closing-section section-shell reveal-on-scroll" aria-labelledby="closing-title">
+        <div className="closing-orbit" aria-hidden="true"><span /><i /><i /><i /></div>
+        <div className="closing-copy"><p className="section-kicker">{t.closing.kicker}</p><h2 id="closing-title">{t.closing.title}</h2><p>{t.closing.body}</p><button className="text-link" type="button" onClick={() => document.querySelector("#home")?.scrollIntoView({ behavior: "smooth" })}>{t.closing.cta}<ArrowUpRight size={15} /></button></div>
+      </section>
 
-      <footer className="footer"><a className="brand brand--footer" href="#home" aria-label="Back to top"><span className="brand__seal"><CircleDotDashed size={17} strokeWidth={1.5} /></span><span className="brand__words"><strong>cosmic, Ghalia</strong><small>For Ghalia, always.</small></span></a><span className="footer__note">A small corner of the universe, made softer for you.</span><span className="footer__credit">Original cosmic artwork, made with love for Ghalia.</span></footer>
+      <footer className="site-footer"><span>GHALIA · 2026</span><span>{t.footer}</span><span>∞</span></footer>
     </main>
   );
 }
