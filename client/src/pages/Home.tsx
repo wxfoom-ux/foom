@@ -1,4 +1,4 @@
-import { useState } from "react";
+import { useState, type MouseEvent } from "react";
 import { ArrowDown, ArrowUpRight, CircleDotDashed, Heart, Moon, Sparkles, Telescope } from "lucide-react";
 import InfiniteSpiral from "@/components/InfiniteSpiral";
 import RippleDistortion from "@/components/RippleDistortion";
@@ -46,6 +46,15 @@ export default function Home() {
   const [openPersonalMessage, setOpenPersonalMessage] = useState<number | null>(null);
   const [activeExplorer, setActiveExplorer] = useState(2);
   const [copied, setCopied] = useState(false);
+  const [clickBursts, setClickBursts] = useState<Array<{ id: number; x: number; y: number }>>([]);
+
+  const handleCosmicClick = (event: MouseEvent<HTMLElement>) => {
+    const target = event.target as HTMLElement;
+    if (target.closest("a, button, input, textarea, select")) return;
+    const burst = { id: Date.now() + Math.random(), x: event.clientX, y: event.clientY };
+    setClickBursts(current => [...current.slice(-2), burst]);
+    window.setTimeout(() => setClickBursts(current => current.filter(item => item.id !== burst.id)), 900);
+  };
 
   const shareGarden = async () => {
     try {
@@ -56,8 +65,10 @@ export default function Home() {
   };
 
   return (
-    <main className="garden-shell cosmic-shell">
+    <main className="garden-shell cosmic-shell" onClick={handleCosmicClick}>
       <div className="starfield" aria-hidden="true" />
+      <div className="meteor-field" aria-hidden="true">{Array.from({ length: 14 }, (_, index) => <i key={index} className={`meteor meteor--${index + 1}`} />)}</div>
+      {clickBursts.map(burst => <span className="click-burst" key={burst.id} style={{ left: burst.x, top: burst.y }} aria-hidden="true">{Array.from({ length: 12 }, (_, index) => <i key={index} />)}</span>)}
       <div className="ripple-backdrop" aria-hidden="true">
         <RippleDistortion src="/ghalia-cosmic-hero.jpg" brushSize={150} strength={0.2} swirl={1} rings={4} grayscale={false} spread={5} fade={3} spacing={15} dispersion={0} glint={0.2} tint="#8b5cf6" tintAmount={0.1} highlightColor="#ffffff" trigger="hover" clickStrength={2} quality="low" enabled className="ripple-backdrop__surface" />
       </div>
